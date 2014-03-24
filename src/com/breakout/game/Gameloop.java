@@ -9,11 +9,9 @@ import com.breakout.render.ScreenView;
 
 public class Gameloop extends Thread {
 	
-	private SurfaceHolder surface;
 	private ScreenView screenView;
 
-	public Gameloop(SurfaceHolder surfaceHolder, ScreenView screenView) {
-		this.surface = surfaceHolder;
+	public Gameloop(ScreenView screenView) {
 		this.screenView = screenView;
 	}
 	
@@ -22,10 +20,12 @@ public class Gameloop extends Thread {
 		Canvas canvas = null;
 		long loopTimer = new Date().getTime();
 		boolean gameOver = false;
-//		while(!gameOver){
-//			// Do stuff
-//			render(canvas);
-//		}
+		while(!gameOver) {
+			long newLoopTimer = new Date().getTime();
+			if (newLoopTimer > loopTimer + 200) {
+//				screenView.updateGLPaddlePos();
+			}
+		}
 		render(canvas);
 	}
 

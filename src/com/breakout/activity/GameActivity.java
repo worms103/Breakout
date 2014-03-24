@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
+import com.breakout.game.Paddle;
 import com.breakout.render.ScreenView;
 
 public class GameActivity extends Activity {
 
 	GLSurfaceView screenView;
+	
+	Paddle paddle;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -17,8 +20,14 @@ public class GameActivity extends Activity {
 	}
 	
 	private void setupGame() {
+		paddle = new Paddle();
+		
 		screenView = new ScreenView(this);
         setContentView(screenView);
+	}
+	
+	public Paddle getPaddle() {
+		return paddle;
 	}
 	
 
