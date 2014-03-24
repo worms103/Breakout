@@ -1,20 +1,44 @@
 package com.breakout.activity;
 
 import android.app.Activity;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
 import com.breakout.render.ScreenView;
 
 public class GameActivity extends Activity {
 
+	GLSurfaceView screenView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setupGame();
 	}
 	
-	private void setupGame(){
-        setContentView(new ScreenView(this));
+	private void setupGame() {
+		screenView = new ScreenView(this);
+        setContentView(screenView);
 	}
+	
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // The following call pauses the rendering thread.
+        // If your OpenGL application is memory intensive,
+        // you should consider de-allocating objects that
+        // consume significant memory here.
+        screenView.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // The following call resumes a paused rendering thread.
+        // If you de-allocated graphic objects for onPause()
+        // this is a good place to re-allocate them.
+        screenView.onResume();
+    }
 
 }

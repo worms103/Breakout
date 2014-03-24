@@ -3,10 +3,10 @@
     package="com.example.breakout"
     android:versionCode="1"
     android:versionName="1.0" >
+    
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
 
-    <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="18" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"

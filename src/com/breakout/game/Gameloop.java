@@ -30,20 +30,6 @@ public class Gameloop extends Thread {
 	}
 
 	private void render(Canvas canvas) {
-		canvas = null;
-		// try locking the canvas for exclusive pixel editing
-		// in the surface
-		try {
-			canvas = surface.lockCanvas();
-			synchronized (surface) {
-				screenView.render(canvas);				
-			}
-		} finally {
-			// in case of an exception the surface is not left in 
-			// an inconsistent state
-			if (canvas != null) {
-				surface.unlockCanvasAndPost(canvas);
-			}
-		}
+		// Going to need to add some logic for rendering openGL
 	}
 }
