@@ -1,4 +1,4 @@
-package com.breakout.render;
+package com.breakout.GL.render;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -31,8 +31,8 @@ public class ScreenView extends GLSurfaceView {
         // interested in events where the touch position changed.
 
     	int posX = ((int) e.getX()) - 5;
-    	if(posX != gameActivity.getPaddle().getPos().x) {
-    		gameActivity.getPaddle().getPos().x = posX;
+    	if(posX != gameActivity.getPaddle().position.x) {
+    		gameActivity.getPaddle().position.x = posX;
 //    		requestRender();
     	}
 

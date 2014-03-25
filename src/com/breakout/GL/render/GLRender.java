@@ -1,11 +1,11 @@
-package com.breakout.render;
+package com.breakout.GL.render;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import com.breakout.GL.render.objects.GLPaddle;
 import com.breakout.activity.GameActivity;
 import com.breakout.game.Gameloop;
-import com.breakout.render.objects.GLPaddle;
 
 import android.content.Context;
 import android.graphics.Canvas;

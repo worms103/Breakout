@@ -1,15 +1,14 @@
 package com.breakout.activity;
 
 import android.app.Activity;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
+import com.breakout.CANVAS.render.ScreenView;
 import com.breakout.game.Paddle;
-import com.breakout.render.ScreenView;
 
 public class GameActivity extends Activity {
 
-	GLSurfaceView screenView;
+	ScreenView screenView;
 	
 	Paddle paddle;
 	
@@ -29,25 +28,26 @@ public class GameActivity extends Activity {
 	public Paddle getPaddle() {
 		return paddle;
 	}
-	
 
     @Override
     protected void onPause() {
         super.onPause();
+        screenView.onPause();
         // The following call pauses the rendering thread.
         // If your OpenGL application is memory intensive,
         // you should consider de-allocating objects that
         // consume significant memory here.
-        screenView.onPause();
+//        screenView.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        screenView.onResume();
         // The following call resumes a paused rendering thread.
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
-        screenView.onResume();
+//        screenView.onResume();
     }
 
 }

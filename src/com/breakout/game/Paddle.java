@@ -3,15 +3,8 @@ package com.breakout.game;
 import android.graphics.Point;
 
 public class Paddle {
-	Point pos;
+	public Point position = new Point(0, 0);
 	
-	public Paddle() {
-		pos = new Point();
-		pos.x = 0;
-		pos.y = 0;
-	}
-	
-	public Point getPos() {
-		return pos;
-	}
+	public int height = 20;
+	public int width = 20;
 }

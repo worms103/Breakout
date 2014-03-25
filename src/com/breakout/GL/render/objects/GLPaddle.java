@@ -1,12 +1,12 @@
-package com.breakout.render.objects;
+package com.breakout.GL.render.objects;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
+import com.breakout.GL.render.GLRender;
 import com.breakout.game.Paddle;
-import com.breakout.render.GLRender;
 
 import android.opengl.GLES20;
 
