@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.breakout.CANVAS.render.ScreenView;
+import com.breakout.game.Ball;
 import com.breakout.game.Paddle;
 
 public class GameActivity extends Activity {
@@ -11,6 +12,7 @@ public class GameActivity extends Activity {
 	ScreenView screenView;
 	
 	Paddle paddle;
+	Ball ball;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,7 @@ public class GameActivity extends Activity {
 	
 	private void setupGame() {
 		paddle = new Paddle();
+		ball = new Ball();
 		
 		screenView = new ScreenView(this);
         setContentView(screenView);
@@ -27,6 +30,10 @@ public class GameActivity extends Activity {
 	
 	public Paddle getPaddle() {
 		return paddle;
+	}
+	
+	public Ball getBall() {
+		return ball;
 	}
 
     @Override

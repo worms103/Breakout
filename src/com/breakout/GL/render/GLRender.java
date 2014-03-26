@@ -3,24 +3,13 @@ package com.breakout.GL.render;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.breakout.GL.render.objects.GLPaddle;
-import com.breakout.activity.GameActivity;
-import com.breakout.game.Gameloop;
-
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
+
+import com.breakout.GL.render.objects.GLPaddle;
+import com.breakout.activity.GameActivity;
 
 public class GLRender implements GLSurfaceView.Renderer {
     

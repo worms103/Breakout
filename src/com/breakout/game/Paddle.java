@@ -1,10 +1,13 @@
 package com.breakout.game;
 
-import android.graphics.Point;
+import com.breakout.CANVAS.render.Screen;
 
-public class Paddle {
-	public Point position = new Point(0, 0);
+public class Paddle extends Block {
 	
-	public int height = 20;
-	public int width = 20;
+	public void init() {
+		position.x = Screen.width / 2;
+    	position.y = Screen.height - (Screen.height / 20);
+    	width = Screen.width / 2;
+    	height = Screen.height / 20;
+	}
 }

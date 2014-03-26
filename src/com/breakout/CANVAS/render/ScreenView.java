@@ -1,26 +1,25 @@
 package com.breakout.CANVAS.render;
 
-import com.breakout.activity.GameActivity;
-import com.breakout.game.Gameloop;
-import com.breakout.game.Paddle;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
-
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
+
+import com.breakout.activity.GameActivity;
+import com.breakout.game.Ball;
+import com.breakout.game.Gameloop;
+import com.breakout.game.Paddle;
 
 public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
 	Paint paint;
 	Gameloop gameLoop;
 	GameActivity gameActivity;
 	Paddle paddle;
+	Ball ball;
 	
 	int width;
 	int height;
@@ -32,8 +31,9 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         gameActivity = (GameActivity) context;
         paddle = gameActivity.getPaddle();
+        ball = gameActivity.getBall();
         getHolder().addCallback(this);
-        gameLoop = new Gameloop(getHolder(), this);
+        gameLoop = new Gameloop(getHolder(), this, gameActivity);
         paint = new Paint();
     }
     
@@ -54,12 +54,10 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
     }
     
     private void initGame(int width, int height) {
-    	this.width = width;
-    	this.height = height;
-    	paddle.position.x = width / 2;
-    	paddle.position.y = height - height / 20;
-    	paddle.width = width / 2;
-    	paddle.height = height / 20;
+    	Screen.width = width;
+    	Screen.height = height - (height / 5);
+    	paddle.init();
+    	ball.init();
     }
 
     public void render(Canvas canvas) {  
@@ -74,6 +72,7 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
         }
         else {
         	drawPaddle(canvas);
+        	drawBall(canvas);
         }
         
         drawingStarted = true;
@@ -82,7 +81,12 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
     private void drawPaddle(Canvas canvas) {
     	paint.setColor(Color.BLACK);
     	canvas.drawRect(paddle.position.x, paddle.position.y, 
-    					paddle.position.x + paddle.width, paddle.position.y + paddle.height, paint);
+    					paddle.position.x + paddle.getWidth(), paddle.position.y + paddle.getHeight(), paint);
+    }
+    
+    private void drawBall(Canvas canvas) {
+    	paint.setColor(Color.BLACK);
+    	canvas.drawCircle(ball.position.x, ball.position.y, ball.getSize(), paint);
     }
     
     private void drawScore(Canvas canvas) {
@@ -110,7 +114,6 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
 		Log.d("Snake", "Surface is being destroyed");
 		// tell the thread to shut down and wait for it to finish
 		// this is a clean shutdown
-		boolean retry = true;
 		gameLoop.pause();
 	}
 
@@ -122,7 +125,7 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent e) {
     	int posX = ((int) e.getX()) - 5;
     	if(posX != paddle.position.x) {
-    		paddle.position.x = posX - (paddle.width / 2);
+    		paddle.position.x = posX - (paddle.getWidth() / 2);
     	}
 
         switch (e.getAction()) {

@@ -6,16 +6,22 @@ import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
 import com.breakout.CANVAS.render.ScreenView;
+import com.breakout.activity.GameActivity;
 
 public class Gameloop extends Thread {
 	
 	private SurfaceHolder surfaceHolder;
 	private ScreenView screenView;
+	private Paddle paddle;
+	private Ball ball;
 	private boolean paused;
 	
-	public Gameloop(SurfaceHolder surfaceHolder, ScreenView screenView2) {
+	public Gameloop(SurfaceHolder surfaceHolder, ScreenView screenView2, GameActivity gameActivity) {
 		this.surfaceHolder = surfaceHolder;
 		this.screenView = screenView2;
+		
+		paddle = gameActivity.getPaddle();
+		ball = gameActivity.getBall();
 	}
 
 	@Override
@@ -29,6 +35,10 @@ public class Gameloop extends Thread {
 			}
 			long newLoopTimer = new Date().getTime();
 			if (newLoopTimer > loopTimer + 200) {
+				ball.onLoop(paddle);
+				if(ball.isDead()) {
+					gameOver = true;
+				}
 				render(canvas);
 			}
 		}
