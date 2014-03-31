@@ -5,15 +5,25 @@ import android.graphics.Point;
 public class Block {
 	
 	public Point position = new Point();
-	protected int height = 20;
-	protected int width = 20;
+	protected int height = 0;
+	protected int width = 0;
 	
-	
-	public boolean detectHit(Point position, int size) {
-		if(position.x > getLeft() && position.x < getRight() && position.y > getTop()) {
-			return true;
+	public Ball.HitDetection detectHit(Point position, int size) {
+		if(position.x > getLeft() && position.x < getRight() && position.y > getTop() && position.y < getBottom()) {
+			if(position.x - Ball.xMovementSpeed <= getLeft()) {
+				return Ball.HitDetection.HIT_LEFT;
+			}
+			else if(position.y - Ball.yMovementSpeed <= getTop()) {
+				return Ball.HitDetection.HIT_TOP;
+			}
+			else if(position.x + Ball.xMovementSpeed >= getRight()) {
+				return Ball.HitDetection.HIT_RIGHT;
+			}
+			else if(position.y + Ball.yMovementSpeed >= getBottom()) {
+				return Ball.HitDetection.HIT_BOTTOM;
+			}
 		}
-		return false;
+		return Ball.HitDetection.NONE;
 	}
 	
 	// Properties
@@ -35,11 +45,11 @@ public class Block {
 	}
 	
 	public int getRight() {
-		return position.x + (width / 2);
+		return position.x + width;
 	}
 	
 	public int getBottom() {
-		return position.y + (width / 2);
+		return position.y + height;
 	}
 	
 	public int getXMiddle() {

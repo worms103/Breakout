@@ -1,5 +1,8 @@
 package com.breakout.CANVAS.render;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,6 +16,8 @@ import com.breakout.activity.GameActivity;
 import com.breakout.game.Ball;
 import com.breakout.game.Gameloop;
 import com.breakout.game.Paddle;
+import com.breakout.game.ScoreBlock;
+import com.breakout.game.ScoreBlock.Levels;
 
 public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
 	Paint paint;
@@ -24,21 +29,15 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
 	int width;
 	int height;
 	boolean gameOver;
-	boolean drawingStarted;
+	boolean gameInit = false;
 	private int score;
 	
     public ScreenView(Context context){
         super(context);
         gameActivity = (GameActivity) context;
-        paddle = gameActivity.getPaddle();
-        ball = gameActivity.getBall();
         getHolder().addCallback(this);
         gameLoop = new Gameloop(getHolder(), this, gameActivity);
         paint = new Paint();
-    }
-    
-    public boolean drawingStart(){
-    	return drawingStarted;
     }
     
     public void gameOver(){
@@ -54,13 +53,25 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
     }
     
     private void initGame(int width, int height) {
+    	paddle = gameActivity.getPaddle();
+        ball = gameActivity.getBall();
+        
     	Screen.width = width;
     	Screen.height = height - (height / 5);
+    	
     	paddle.init();
     	ball.init();
+    	gameActivity.setLevel(Levels.LEVEL_ONE);
+    	
+    	gameLoop.unpause();
+    	gameInit = true;
     }
 
-    public void render(Canvas canvas) {  
+    public void render(Canvas canvas) {
+    	if(!gameInit) {
+    		return;
+    	}
+    	
         //Fill canvas with white
         paint.setColor(Color.WHITE);
         canvas.drawPaint(paint);
@@ -73,20 +84,31 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
         else {
         	drawPaddle(canvas);
         	drawBall(canvas);
+        	drawScoreBlocks(canvas);
         }
-        
-        drawingStarted = true;
     }
     
     private void drawPaddle(Canvas canvas) {
     	paint.setColor(Color.BLACK);
-    	canvas.drawRect(paddle.position.x, paddle.position.y, 
-    					paddle.position.x + paddle.getWidth(), paddle.position.y + paddle.getHeight(), paint);
+    	canvas.drawRect(paddle.getLeft(), paddle.getTop(), 
+    					paddle.getRight(), paddle.getBottom(), paint);
     }
     
     private void drawBall(Canvas canvas) {
     	paint.setColor(Color.BLACK);
     	canvas.drawCircle(ball.position.x, ball.position.y, ball.getSize(), paint);
+    }
+    
+    private void drawScoreBlocks(Canvas canvas) {
+    	int borderSize = 8;
+    	for(ScoreBlock scoreBlock : gameActivity.getScoreBlocks()) {
+    		paint.setColor(Color.RED);
+    		canvas.drawRect(scoreBlock.getLeft(), scoreBlock.getTop(), 
+    				scoreBlock.getRight(), scoreBlock.getBottom(), paint);
+    		paint.setColor(Color.BLACK);
+    		canvas.drawRect(scoreBlock.getLeft() + borderSize, scoreBlock.getTop() + borderSize, 
+    				scoreBlock.getRight() - borderSize, scoreBlock.getBottom() - borderSize, paint);
+    	}	
     }
     
     private void drawScore(Canvas canvas) {

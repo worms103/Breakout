@@ -6,6 +6,9 @@ import android.os.Bundle;
 import com.breakout.CANVAS.render.ScreenView;
 import com.breakout.game.Ball;
 import com.breakout.game.Paddle;
+import com.breakout.game.ScoreBlock;
+import com.breakout.game.ScoreBlock.Levels;
+import com.breakout.game.ScoreBlockList;
 
 public class GameActivity extends Activity {
 
@@ -13,6 +16,7 @@ public class GameActivity extends Activity {
 	
 	Paddle paddle;
 	Ball ball;
+	ScoreBlockList blocks;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +27,7 @@ public class GameActivity extends Activity {
 	private void setupGame() {
 		paddle = new Paddle();
 		ball = new Ball();
+		blocks = ScoreBlock.initBlocks(Levels.EMPTY);
 		
 		screenView = new ScreenView(this);
         setContentView(screenView);
@@ -34,6 +39,14 @@ public class GameActivity extends Activity {
 	
 	public Ball getBall() {
 		return ball;
+	}
+	
+	public void setLevel(Levels level) {
+		blocks = ScoreBlock.initBlocks(level);
+	}
+	
+	public ScoreBlockList getScoreBlocks() {
+		return blocks;
 	}
 
     @Override

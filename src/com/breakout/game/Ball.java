@@ -9,40 +9,63 @@ public class Ball {
 	
 	private int size;
 	
-	private int xMovement = 10;
-	private int yMovement = 10;
+	public static final int xSpeed = 10;
+	public static final int ySpeed = 10;
+	
+	public static final int xMovementSpeed = 1;
+	public static final int yMovementSpeed = 1;
+	
+	private int xMovement = xMovementSpeed;
+	private int yMovement = -yMovementSpeed;
 	
 	private boolean dead;
 	
-	Paddle paddle;
-	
 	public void init() {
-		size = Screen.width / 20;
+		size = Screen.width / 100;
+		position.x = Screen.width / 2;
+    	position.y = Screen.height / 2;
 	}
 	
-	public void onLoop(Paddle paddle) {
-		if(paddle.detectHit(position, size)) {
-			position.y += yMovement = -10;
+	public void onLoop(Block block) {
+		HitDetection detectedHit = block.detectHit(position, size);
+		if(!detectedHit.equals(HitDetection.NONE)) {
+			switch(detectedHit) {
+				case HIT_LEFT:
+					xMovement = -xMovementSpeed;
+					break;
+				case HIT_TOP:
+					yMovement = -yMovementSpeed;
+					break;
+				case HIT_RIGHT:
+					xMovement = xMovementSpeed;
+					break;
+				case HIT_BOTTOM:
+					yMovement = yMovementSpeed;
+					break;
+				default:
+					break;
+			}
 		}
-		else {
-			position.x += calculateXMovement();
-			position.y += calculateYMovement();
-		}
+	}
+	
+	public void moveBall() {
+		position.x += calculateXMovement();
+		position.y += calculateYMovement();
 	}
 	
 	private int calculateXMovement() {
 		if(position.x < 0) {
-			return xMovement = 10;
+			return xMovement = xMovementSpeed;
 		}
 		else if(position.x > Screen.width) {
-			return xMovement = -10;
+			return xMovement = -xMovementSpeed;
 		}
 		return xMovement;
 	}
 	
 	private int calculateYMovement() {
 		if(position.y < 0) {
-			return yMovement = 10;
+			return yMovement = yMovementSpeed;
 		}
 		else if(position.y > Screen.height) {
 			dead = true;
@@ -59,5 +82,15 @@ public class Ball {
 	
 	public boolean isDead() {
 		return dead;
+	}
+	
+	// Static Methods
+	
+	public enum HitDetection {
+		NONE,
+		HIT_LEFT,
+		HIT_TOP,
+		HIT_RIGHT,
+		HIT_BOTTOM
 	}
 }

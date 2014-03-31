@@ -12,16 +12,14 @@ public class Gameloop extends Thread {
 	
 	private SurfaceHolder surfaceHolder;
 	private ScreenView screenView;
-	private Paddle paddle;
-	private Ball ball;
-	private boolean paused;
+	private GameActivity gameActivity;
+	private boolean paused = true;
 	
 	public Gameloop(SurfaceHolder surfaceHolder, ScreenView screenView2, GameActivity gameActivity) {
 		this.surfaceHolder = surfaceHolder;
 		this.screenView = screenView2;
 		
-		paddle = gameActivity.getPaddle();
-		ball = gameActivity.getBall();
+		this.gameActivity = gameActivity;
 	}
 
 	@Override
@@ -29,20 +27,36 @@ public class Gameloop extends Thread {
 		Canvas canvas = null;
 		long loopTimer = new Date().getTime();
 		boolean gameOver = false;
+		int loopSpeed = 200; // 200
 		while(!gameOver) {
 			while(paused) {
 				waitForUnpause();
 			}
 			long newLoopTimer = new Date().getTime();
-			if (newLoopTimer > loopTimer + 200) {
-				ball.onLoop(paddle);
-				if(ball.isDead()) {
+			if (newLoopTimer > loopTimer + loopSpeed) {
+				if(calculateBall()) {
 					gameOver = true;
+					continue;
 				}
 				render(canvas);
 			}
 		}
 		render(canvas);
+	}
+
+	private boolean calculateBall() {
+		Ball ball = gameActivity.getBall();
+		Paddle paddle = gameActivity.getPaddle();
+		ScoreBlockList scoreBlocks = gameActivity.getScoreBlocks();
+		for(int i = 0; i < Ball.xSpeed; i++) {
+			ball.onLoop(paddle);
+			scoreBlocks.onLoop(ball);
+			ball.moveBall();
+			if(ball.isDead()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void waitForUnpause() {
