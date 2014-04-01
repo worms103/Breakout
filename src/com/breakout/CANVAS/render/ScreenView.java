@@ -102,7 +102,17 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
     private void drawScoreBlocks(Canvas canvas) {
     	int borderSize = 8;
     	for(ScoreBlock scoreBlock : gameActivity.getScoreBlocks()) {
-    		paint.setColor(Color.RED);
+    		switch(scoreBlock.getHealth()) {
+	    		case 1:
+	    			paint.setColor(Color.RED);
+	    			break;
+	    		case 2:
+	    			paint.setColor(Color.BLUE);
+	    			break;
+	    		case 3:
+	    			paint.setColor(Color.GRAY);
+	    			break;
+    		}
     		canvas.drawRect(scoreBlock.getLeft(), scoreBlock.getTop(), 
     				scoreBlock.getRight(), scoreBlock.getBottom(), paint);
     		paint.setColor(Color.BLACK);
@@ -145,7 +155,7 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
 	
 	@Override
     public boolean onTouchEvent(MotionEvent e) {
-    	int posX = ((int) e.getX()) - 5;
+    	int posX = (int) e.getX();
     	if(posX != paddle.position.x) {
     		paddle.position.x = posX - (paddle.getWidth() / 2);
     	}

@@ -42,6 +42,13 @@ public class Ball {
 				case HIT_BOTTOM:
 					yMovement = yMovementSpeed;
 					break;
+				case PADDLE_LEFT:
+					yMovement = -yMovementSpeed;
+					xMovement = -xMovementSpeed;
+					break;
+				case PADDLE_RIGHT:
+					yMovement = -yMovementSpeed;
+					xMovement = xMovementSpeed;
 				default:
 					break;
 			}
@@ -91,6 +98,8 @@ public class Ball {
 		HIT_LEFT,
 		HIT_TOP,
 		HIT_RIGHT,
-		HIT_BOTTOM
+		HIT_BOTTOM,
+		PADDLE_LEFT,
+		PADDLE_RIGHT
 	}
 }
