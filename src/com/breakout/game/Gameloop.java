@@ -27,14 +27,15 @@ public class Gameloop extends Thread {
 		Canvas canvas = null;
 		long loopTimer = new Date().getTime();
 		boolean gameOver = false;
-		int loopSpeed = 200; // 200
+		int loopSpeed = 200;
 		while(!gameOver) {
 			while(paused) {
 				waitForUnpause();
 			}
 			long newLoopTimer = new Date().getTime();
 			if (newLoopTimer > loopTimer + loopSpeed) {
-				if(calculateBall()) {
+				calculateBall();
+				if(gameActivity.getBall().isDead()) {
 					gameOver = true;
 					continue;
 				}
@@ -44,19 +45,19 @@ public class Gameloop extends Thread {
 		render(canvas);
 	}
 
-	private boolean calculateBall() {
+	private void calculateBall() {
 		Ball ball = gameActivity.getBall();
 		Paddle paddle = gameActivity.getPaddle();
 		ScoreBlockList scoreBlocks = gameActivity.getScoreBlocks();
 		for(int i = 0; i < Ball.xSpeed; i++) {
+			if(scoreBlocks.size() == 0) {
+				gameActivity.goToNextLevel();
+				return;
+			}
 			ball.onLoop(paddle);
 			scoreBlocks.onLoop(ball);
 			ball.moveBall();
-			if(ball.isDead()) {
-				return true;
-			}
 		}
-		return false;
 	}
 
 	private void waitForUnpause() {

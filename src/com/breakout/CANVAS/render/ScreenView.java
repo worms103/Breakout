@@ -1,8 +1,5 @@
 package com.breakout.CANVAS.render;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,8 +13,8 @@ import com.breakout.activity.GameActivity;
 import com.breakout.game.Ball;
 import com.breakout.game.Gameloop;
 import com.breakout.game.Paddle;
+import com.breakout.game.Score;
 import com.breakout.game.ScoreBlock;
-import com.breakout.game.ScoreBlock.Levels;
 
 public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
 	Paint paint;
@@ -30,7 +27,6 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
 	int height;
 	boolean gameOver;
 	boolean gameInit = false;
-	private int score;
 	
     public ScreenView(Context context){
         super(context);
@@ -61,7 +57,7 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
     	
     	paddle.init();
     	ball.init();
-    	gameActivity.setLevel(Levels.LEVEL_ONE);
+    	gameActivity.goToNextLevel();
     	
     	gameLoop.unpause();
     	gameInit = true;
@@ -86,6 +82,7 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
         	drawBall(canvas);
         	drawScoreBlocks(canvas);
         }
+        drawScore(canvas);
     }
     
     private void drawPaddle(Canvas canvas) {
@@ -124,7 +121,7 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
     private void drawScore(Canvas canvas) {
     	paint.setColor(Color.BLACK);
     	paint.setTextSize(16f);
-    	canvas.drawText("Score: " + score, 40, 40, paint);
+    	canvas.drawText("Score: " + Score.score, (Screen.width / 2) - 16, Screen.height + 40, paint);
 	}
 
 	@Override
@@ -147,10 +144,6 @@ public class ScreenView extends SurfaceView implements SurfaceHolder.Callback {
 		// tell the thread to shut down and wait for it to finish
 		// this is a clean shutdown
 		gameLoop.pause();
-	}
-
-	public void setScore(int score) {
-		this.score = score;
 	}
 	
 	@Override
